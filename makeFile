@@ -1,0 +1,27 @@
+-include .env
+
+.PHONY: all build test clean format gas deploy-anvil deploy-base-sepolia
+
+build:
+	forge build
+
+test:
+	forge test -vvv
+
+gas:
+	forge test --gas-report
+
+clean:
+	forge clean
+
+format:
+	forge fmt
+
+snapshot:
+	forge snapshot
+
+deploy-anvil:
+	forge script script/DeployMSC.s.sol:DeployMSC --rpc-url http://localhost:8545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --broadcast
+
+deploy-base-sepolia:
+	forge script script/DeployMSC.s.sol:DeployMSC --rpc-url $(BASE_SEPOLIA_RPC_URL) --account MSC_key --broadcast --verify --etherscan-api-key $(ETHERSCAN_API_KEY) -vvvv
